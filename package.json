@@ -1,0 +1,23 @@
+{
+  "name": "integral",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@grammyjs/hydrate": "^1.6.0",
+    "dotenv": "^17.3.1",
+    "grammy": "^1.41.1",
+    "mongoose": "^9.3.0",
+    "nodemon": "^3.1.14"
+  },
+  "devDependencies": {
+    "@types/mongoose": "^5.11.96"
+  }
+}
