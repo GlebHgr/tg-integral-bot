@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Bot, InlineKeyboard } = require('grammy');
+const { Bot, InlineKeyboard, GrammyError, HttpError } = require('grammy');
 const { hydrate } = require('@grammyjs/hydrate');
 const mongoose = require('mongoose');
 const { Participant, User } = require('./models');
@@ -107,6 +107,24 @@ bot.command("results", async (ctx) => {
     mr.forEach((p, i) => res += `${i + 1}. ${p.name}: ${p.votes}\n`);
 
     await ctx.reply(res, { parse_mode: "Markdown" });
+});
+
+bot.catch((err) => {
+  const ctx = err.ctx;
+  console.error(`Error while handling update ${ctx.update.update_id}:`);
+  const e = err.error;
+  
+  if (e instanceof GrammyError) {
+    if (e.description.includes("bot was blocked by the user")) {
+      console.log(`Пользователь ${ctx.from?.id} заблокировал бота. Сообщение не отправлено.`);
+      return;
+    }
+    console.error("Error in request:", e.description);
+  } else if (e instanceof HttpError) {
+    console.error("Could not contact Telegram:", e);
+  } else {
+    console.error("Unknown error:", e);
+  }
 });
 
 bot.start();
